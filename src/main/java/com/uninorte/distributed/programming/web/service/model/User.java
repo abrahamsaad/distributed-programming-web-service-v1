@@ -6,6 +6,7 @@ public class User {
 	private String user_name;
 	private String user_password_sha256;
 	private String user_email;
+
 	
 	public User(int user_id, String user_name, String user_password_sha256, String user_email) {
 		super();
@@ -13,6 +14,7 @@ public class User {
 		this.user_name = user_name;
 		this.user_password_sha256 = user_password_sha256;
 		this.user_email = user_email;
+	
 	}
 
 	public Integer getUser_id() {
@@ -46,12 +48,16 @@ public class User {
 	public void setUser_email(String user_email) {
 		this.user_email = user_email;
 	}
+	
+	
 
 	@Override
 	public String toString() {
 		return "User [user_id=" + user_id + ", user_name=" + user_name + ", user_password_sha256="
 				+ user_password_sha256 + ", user_email=" + user_email + "]";
 	}
+
+	
 	
 	
 	

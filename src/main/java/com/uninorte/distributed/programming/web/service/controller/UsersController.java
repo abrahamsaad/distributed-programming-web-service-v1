@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,9 +20,13 @@ import com.uninorte.distributed.programming.web.service.model.User;
 @RestController
 public class UsersController {
 	
+	@Autowired
+	private static Environment environment;
+	
 	public static ArrayList<User> listOfUser =new ArrayList();
 	
 	static {
+		
 		listOfUser.add(new User(1,"asaad1","password","asaad@uninorte.edu.co"));
 		listOfUser.add(new User(2,"asaad2","password","asaad@uninorte.edu.co"));
 		listOfUser.add(new User(3,"asaad3","password","asaad@uninorte.edu.co"));
