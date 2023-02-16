@@ -1,11 +1,24 @@
-package com.uninorte.distributed.programming.web.service.model;
+package com.uninorte.distributed.programming.web.service;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity(name = "t1_user")
 public class User {
 	
+	@Id
 	private Integer user_id;
+	@Column
 	private String user_name;
+	@Column
 	private String user_password_sha256;
+	@Column
 	private String user_email;
+	
+	public User() {
+		
+	}
 
 	
 	public User(int user_id, String user_name, String user_password_sha256, String user_email) {

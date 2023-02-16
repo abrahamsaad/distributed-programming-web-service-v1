@@ -1,4 +1,4 @@
-package com.uninorte.distributed.programming.web.service.controller;
+package com.uninorte.distributed.programming.web.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.uninorte.distributed.programming.web.service.model.User;
-
 @RestController
 public class UsersController {
 	
 	@Autowired
 	private static Environment environment;
+	
+	@Autowired
+	private UserRepository repository;
 	
 	public static ArrayList<User> listOfUser =new ArrayList();
 	
@@ -41,27 +42,33 @@ public class UsersController {
 	
 	@GetMapping(path = "/user/get/all")
 	public List<User> getAllUser(@RequestHeader(name = "Authorization",defaultValue = "APP-CODE;UNIXTIMESTAMP;UNIQ-TOKEN") String authorization){
-		
-		return listOfUser;
+		return repository.findAll();
+		//return listOfUser;
 	}
 	
 	@GetMapping(path = "/user/get/{user_id}")
 	public User getUser(@RequestHeader(name = "Authorization",defaultValue = "APP-CODE;UNIXTIMESTAMP;UNIQ-TOKEN") String authorization,@PathVariable int user_id){		
-		Predicate<? super User> predicate= user-> user.getUser_id().equals(user_id);
-        return listOfUser.stream().filter(predicate).findFirst().orElse(null);		
+		return repository.findById(user_id).get();
+		//Predicate<? super User> predicate= user-> user.getUser_id().equals(user_id);
+        //return listOfUser.stream().filter(predicate).findFirst().orElse(null);		
+        
 	}
 	
 	@PostMapping(path = "/user/create")
 	public List<User> createUser(@RequestHeader(name = "Authorization",defaultValue = "APP-CODE;UNIXTIMESTAMP;UNIQ-TOKEN") String authorization,@RequestBody User newUser){
-		this.listOfUser.add(newUser);
-		return listOfUser;
+		//this.listOfUser.add(newUser);
+		repository.save(newUser);
+		
+		return repository.findAll();
 	}
 	
 	@DeleteMapping(path = "/user/delete")
 	public List<User> deleteUser(@RequestHeader(name = "Authorization",defaultValue = "APP-CODE;UNIXTIMESTAMP;UNIQ-TOKEN") String authorization,@RequestParam Integer user_id){
-		Predicate<? super User> predicate= user-> user.getUser_id().equals(user_id);
-		listOfUser.removeIf(predicate);
-		return listOfUser;
+		//Predicate<? super User> predicate= user-> user.getUser_id().equals(user_id);
+		//listOfUser.removeIf(predicate);
+		repository.deleteById(user_id);
+		
+		return repository.findAll();
 	}
 
 }
