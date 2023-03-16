@@ -1,0 +1,40 @@
+version: '3.7'
+
+services: 
+  user-management-service:
+    image:  abrahamsaad/distributed-programing-2023-1-restful-service-v1:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8000:8000"
+    networks:
+      - user-management-service-network
+    depends_on:
+      - load-balancer-service
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://load-balancer-service:8761/eureka
+    
+  integration-service:
+    image:  abrahamsaad/distributed-programing-2023-1-integration-service:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8100:8100"
+    networks:
+      - user-management-service-network
+    depends_on:
+      - load-balancer-service
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://load-balancer-service:8761/eureka
+      
+  load-balancer-service:
+    image:  abrahamsaad/distributed-programing-2023-1-load-balancer-service:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8761:8761"
+    networks:
+      - user-management-service-network
+
+
+
+networks:
+  user-management-service-network:
+   
