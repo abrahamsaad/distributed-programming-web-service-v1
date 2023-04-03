@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,10 +17,13 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.uninorte.distributed.programming.web.service.repository.UserRepository;
 
 @RestController
 public class UsersController {
+	
+	private Logger logger = LoggerFactory.getLogger(UsersController.class);
 	
 	@Autowired
 	private static Environment environment;
@@ -44,12 +49,14 @@ public class UsersController {
 	
 	@GetMapping(path = "/user/get/all")
 	public List<User> getAllUser(@RequestHeader(name = "Authorization",defaultValue = "APP-CODE;UNIXTIMESTAMP;UNIQ-TOKEN") String authorization){
+		logger.info("getAllUser was called");
 		return repository.findAll();
 		//return listOfUser;
 	}
 	
 	@GetMapping(path = "/user/get/{user_id}")
-	public User getUser(@RequestHeader(name = "Authorization",defaultValue = "APP-CODE;UNIXTIMESTAMP;UNIQ-TOKEN") String authorization,@PathVariable int user_id){		
+	public User getUser(@RequestHeader(name = "Authorization",defaultValue = "APP-CODE;UNIXTIMESTAMP;UNIQ-TOKEN") String authorization,@PathVariable int user_id){
+		logger.info("getUser was called with {}",user_id);
 		return repository.findById(user_id).get();
 		//Predicate<? super User> predicate= user-> user.getUser_id().equals(user_id);
         //return listOfUser.stream().filter(predicate).findFirst().orElse(null);		
@@ -59,6 +66,7 @@ public class UsersController {
 	@PostMapping(path = "/user/create")
 	public List<User> createUser(@RequestHeader(name = "Authorization",defaultValue = "APP-CODE;UNIXTIMESTAMP;UNIQ-TOKEN") String authorization,@RequestBody User newUser){
 		//this.listOfUser.add(newUser);
+		logger.info("createUser was called with {}",newUser.toString());
 		repository.save(newUser);
 		
 		return repository.findAll();
@@ -68,6 +76,7 @@ public class UsersController {
 	public List<User> deleteUser(@RequestHeader(name = "Authorization",defaultValue = "APP-CODE;UNIXTIMESTAMP;UNIQ-TOKEN") String authorization,@RequestParam Integer user_id){
 		//Predicate<? super User> predicate= user-> user.getUser_id().equals(user_id);
 		//listOfUser.removeIf(predicate);
+		logger.info("/user/get/all was called");
 		repository.deleteById(user_id);
 		
 		return repository.findAll();

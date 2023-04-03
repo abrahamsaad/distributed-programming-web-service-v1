@@ -32,7 +32,14 @@ services:
       - "8761:8761"
     networks:
       - user-management-service-network
-
+  zipkin-server:
+    image:  openzipkin/zipkin:2.24
+    mem_limit: 700m
+    ports:
+      - "9411:9411"
+    networks:
+      - user-management-service-network
+    
 
 
 networks:
